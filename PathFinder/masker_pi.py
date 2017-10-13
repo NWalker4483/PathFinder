@@ -1,32 +1,30 @@
 # Apply edge detection method on the imag
-import numpy as np
-import argparse
 import imutils
 from PIL import Image
-from skimage import img_as_uint
 import cv2
 # define the lower and upper boundaries of the "green"
 # ball in the HSV color space, then initialize the
 # list of tracked points
 cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)  
-cv2.namedWindow("result-image", cv2.WINDOW_AUTOSIZE)
-cv2.namedWindow("cont-image", cv2.WINDOW_AUTOSIZE)
-cv2.namedWindow("real-image", cv2.WINDOW_AUTOSIZE)
+#cv2.namedWindow("result-image", cv2.WINDOW_AUTOSIZE)
+#cv2.namedWindow("cont-image", cv2.WINDOW_AUTOSIZE)
+#cv2.namedWindow("real-image", cv2.WINDOW_AUTOSIZE)
 #Position the windows next to eachother
-cv2.moveWindow("cont-image",600,400)  
+#cv2.moveWindow("cont-image",600,400)  
 cv2.moveWindow("base-image",0,0)  
-cv2.moveWindow("result-image",600,0)
-cv2.moveWindow("real-image",0,400)
+#cv2.moveWindow("result-image",600,0)
+#cv2.moveWindow("real-image",0,400)
 #Start the window thread for the two windows we are using
 cv2.startWindowThread()
-camera = cv2.VideoCapture("Test_Video/20171012_124309.mp4") #"../../Downloads/20171012_124309.mp4")
+"""
 def pixelate(_image,pixelSize=32):
         backgroundColor = (0,)*3
         _image=Image.fromarray(_image)
         _image = _image.resize((int(_image.size[0]/pixelSize), int(_image.size[1]/pixelSize)), Image.NEAREST)
         _image = _image.resize((int(_image.size[0]*pixelSize), int(_image.size[1]*pixelSize)), Image.NEAREST)
         return np.array(_image)
-def calibrate(_frame,_width):
+    """
+def calibrate(_frame,_width=600):
     _frame = imutils.resize(_frame, width=_width)
     _frame = cv2.flip(_frame,1)
     HSV= cv2.cvtColor(_frame,cv2.COLOR_BGR2HSV)
@@ -39,7 +37,7 @@ def calibrate(_frame,_width):
     lowerBound = np.array([hueMin,0,0], np.uint8)
     upperBound = np.array([hueMax,255,255], np.uint8)
     mask = cv2.inRange(HSV,lowerBound,upperBound)
-    return mask,area,_frame
+    return mask
 def filter_region(image, vertices):
         #Create the mask using the vertices and apply it to the input image
         mask = np.zeros_like(image)
@@ -63,24 +61,15 @@ def select_region(_image):
 def getit() :
     for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
         image = frame.array
-        nimage = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
-        nimage = Image.fromarray(nimage)
-        key = cv2.waitKey(1) & 0xFF
-        nimage,area,image=calibrate(frame,600)
-        #nimage = cv2.blur(nimage,(5,5))
-        #nimage = cv2.Canny(nimage,50,150,apertureSize=7
-        #Output dtype = cv2.CV_64F. Then take its absolute and convert to cv2.CV_8U
-        nimage = imutils.resize(nimage, width=50)
+        #nimage = Image.fromarray(nimage)
+        nimage=calibrate(image)
+        #nimage = imutils.resize(nimage, width=50)
         cv2.imshow("base-image", nimage)
-        cv2.imshow("result-image", area)
-        cv2.imshow("cont-image", image)
-    
+        #cv2.imshow("result-image", area)
+        #cv2.imshow("cont-image", image)
         # clear the stream in preparation for the next frame
         rawCapture.truncate(0)
         # if the `q` key was pressed, break from the loop
-        if key == ord("q"):
-            camera.close()
-            break
 while True:
     try:
         getit()
