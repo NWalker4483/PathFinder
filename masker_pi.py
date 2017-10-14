@@ -4,6 +4,7 @@ from PIL import Image
 import cv2
 """
 Run to use usb webcam
+
 sudo apt-get install update
 sudo apt-get upgrade
 sudo apt-get install python-pygame
@@ -12,6 +13,20 @@ unzip imgproc.zip
 cd library
 sudo make install
 cd..
+"""
+"""
+from imgproc import *
+# open the webcam
+my_camera = Camera(320, 240)
+# grab an image from the camera
+my_image = my_camera.grabImage()
+# open a view, setting the view to the size of the captured image
+my_view = Viewer(my_image.width, my_image.height, "Basic image processing")
+# display the image on the screen
+my_view.displayImage(my_image)
+ 
+# wait for 5 seconds, so we can see the image
+waitTime(5000)
 """
 cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)  
 #cv2.namedWindow("result-image", cv2.WINDOW_AUTOSIZE)
