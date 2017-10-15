@@ -1,4 +1,5 @@
-# Apply edge detection method on the imag
+# Apply edge detection method on the image
+print("Importing Junks & Stuff")
 from imutils.video import VideoStream
 from imutils import resize
 from PIL import Image
@@ -52,19 +53,27 @@ def select_region(_image):
         vertices = np.array([[bottom_left, top_left, top_right, bottom_right]], dtype=np.int32)
         return filter_region(_image, vertices)    
 def getit() :
-    frame=camera.read()
+    try:
+        frame=camera.read()
+    except AttributeError:
+        pass
     nimage=calibrate(frame)
     #nimage = imutils.resize(nimage, width=50)
     cv2.imshow("base-image", frame)
     cv2.imshow("result-image", nimage)
 def ConnectCam(tries=0):
-    try:
-        _camera = VideoStream(tries,resolution=(320, 240),framerate=32).start()
-    except NameError:
-        tries+=1
-        _camera=ConnectCam(tries)
-    return _camera
+    if tries<10:
+        try:
+            _camera = VideoStream(tries,resolution=(320, 240),framerate=32).start()
+        except NameError:
+            tries+=1
+            _camera=ConnectCam(tries)
+        return _camera
+    else:
+        print("We've tried to many times")
+
 camera=ConnectCam()
+print("Lets get it started in here")
 while True:
     try:
         getit()
