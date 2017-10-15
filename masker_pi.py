@@ -1,48 +1,24 @@
 # Apply edge detection method on the imag
-import imutils
+from imutils.video import VideoStream
+from imutils import resize
 from PIL import Image
 import cv2
-"""
-Run to use usb webcam
-
-sudo apt-get install update
-sudo apt-get upgrade
-sudo apt-get install python-pygame
-wget http://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/robot/resources/imgproc.zip
-unzip imgproc.zip
-cd library
-sudo make install
-cd..
-"""
-"""
-from imgproc import *
-# open the webcam
-my_camera = Camera(320, 240)
-# grab an image from the camera
-my_image = my_camera.grabImage()
-# open a view, setting the view to the size of the captured image
-my_view = Viewer(my_image.width, my_image.height, "Basic image processing")
-# display the image on the screen
-my_view.displayImage(my_image)
- 
-# wait for 5 seconds, so we can see the image
-waitTime(5000)
-"""
-cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)  
-#cv2.namedWindow("result-image", cv2.WINDOW_AUTOSIZE)
-#cv2.namedWindow("cont-image", cv2.WINDOW_AUTOSIZE)
-#cv2.namedWindow("real-image", cv2.WINDOW_AUTOSIZE)
-#Position the windows next to eachother
-#cv2.moveWindow("cont-image",600,400)  
-cv2.moveWindow("base-image",0,0)  
-#cv2.moveWindow("result-image",600,0)
-#cv2.moveWindow("real-image",0,400)
-#Start the window thread for the two windows we are using
-cv2.startWindowThread()
-def calibrate(_frame,_width=600):
+def CreateViews():
+    cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)  
+    cv2.moveWindow("base-image",0,0) 
+    cv2.namedWindow("result-image", cv2.WINDOW_AUTOSIZE)
+    #cv2.namedWindow("cont-image", cv2.WINDOW_AUTOSIZE)
+    #cv2.namedWindow("real-image", cv2.WINDOW_AUTOSIZE)
+    #Position the windows next to eachother
+    #cv2.moveWindow("cont-image",600,400)  
+    
+    cv2.moveWindow("result-image",600,0)
+    #cv2.moveWindow("real-image",0,400)
+    cv2.startWindowThread()
+def calibrate(_frame,_width=400):
     # define the lower and upper boundaries of the mask
     # ball in the HSV color space, then initialize the
-    _frame = imutils.resize(_frame, width=_width)
+    _frame = resize(_frame, width=_width)
     _frame = cv2.flip(_frame,1)
     HSV= cv2.cvtColor(_frame,cv2.COLOR_BGR2HSV)
     # resize the frame, blur it, and convert it to the HSV color space
@@ -76,23 +52,19 @@ def select_region(_image):
         vertices = np.array([[bottom_left, top_left, top_right, bottom_right]], dtype=np.int32)
         return filter_region(_image, vertices)    
 def getit() :
-    for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-        image = frame.array
-        #nimage = Image.fromarray(nimage)
-        nimage=calibrate(image)
-        #nimage = imutils.resize(nimage, width=50)
-        cv2.imshow("base-image", nimage)
-        #cv2.imshow("result-image", area)
-        #cv2.imshow("cont-image", image)
-        # clear the stream in preparation for the next frame
-        rawCapture.truncate(0)
-        # if the `q` key was pressed, break from the loop
+    frame=camera.read()
+    nimage=calibrate(frame)
+    #nimage = imutils.resize(nimage, width=50)
+    cv2.imshow("base-image", frame)
+    cv2.imshow("result-image", nimage)
+
+camera = VideoStream(tries,resolution=(320, 240),framerate=32).start()
 while True:
     try:
         getit()
     except KeyboardInterrupt:
         print("Closing...")
-        camera.close()
+        camera.stream.stop()
         break
     #pimage= pixelate(image,pixelSize=3)
 # images showing the region of interest only
