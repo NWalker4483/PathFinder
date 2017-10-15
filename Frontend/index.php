@@ -1,5 +1,6 @@
 <?php
-    if($_GET['state']==="off"){ 
+shell_exec("/usr/local/bin/gpio -g mode 17 out");
+if($_GET['state']==="off"){ 
 echo "LED is off";
 shell_exec("/usr/local/bin/gpio -g write 17 0"); 
 }
