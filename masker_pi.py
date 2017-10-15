@@ -57,8 +57,14 @@ def getit() :
     #nimage = imutils.resize(nimage, width=50)
     cv2.imshow("base-image", frame)
     cv2.imshow("result-image", nimage)
-
-camera = VideoStream(tries,resolution=(320, 240),framerate=32).start()
+def ConnectCam(tries=0):
+    try:
+        _camera = VideoStream(tries,resolution=(320, 240),framerate=32).start()
+    except NameError:
+        tries+=1
+        _camera=ConnectCam(tries)
+    return _camera
+camera=ConnectCam()
 while True:
     try:
         getit()
