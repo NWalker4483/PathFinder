@@ -8,13 +8,8 @@ def CreateViews():
     cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)  
     cv2.moveWindow("base-image",0,0) 
     cv2.namedWindow("result-image", cv2.WINDOW_AUTOSIZE)
-    #cv2.namedWindow("cont-image", cv2.WINDOW_AUTOSIZE)
-    #cv2.namedWindow("real-image", cv2.WINDOW_AUTOSIZE)
-    #Position the windows next to eachother
-    #cv2.moveWindow("cont-image",600,400)  
-    
     cv2.moveWindow("result-image",600,0)
-    #cv2.moveWindow("real-image",0,400)
+
     cv2.startWindowThread()
 def calibrate(_frame,_width=400):
     # define the lower and upper boundaries of the mask
@@ -52,7 +47,7 @@ def select_region(_image):
         # the vertices are an array of polygons (i.e array of arrays) and the data type must be integer
         vertices = np.array([[bottom_left, top_left, top_right, bottom_right]], dtype=np.int32)
         return filter_region(_image, vertices)    
-def getit() :
+def show_mask() :
     try:
         frame=camera.read()
     except AttributeError:
@@ -76,9 +71,10 @@ camera=ConnectCam()
 print("Lets get it started in here")
 while True:
     try:
-        getit()
+        show_mask()
     except KeyboardInterrupt:
         print("Closing...")
+        cv2.destroyAllWindows()
         camera.stream.stop()
         break
     #pimage= pixelate(image,pixelSize=3)
@@ -89,4 +85,4 @@ while True:
 	# if the 'q' key is pressed, stop the loop
 # cleanup the camera and close any open windows
 
-#cv2.destroyAllWindows()
+

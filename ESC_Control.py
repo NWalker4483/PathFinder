@@ -10,10 +10,6 @@ import pigpio #importing GPIO library
 #Connect the ESC in this GPIO pin 
 from getch import getch
 pi = pigpio.pi();
- #change this if your ESC's min value is different or leave it be
-print ("For first time launch, select calibrate")
-print ("Type the exact word for the function you want")
-print ("calibrate OR manual OR control OR arm OR stop")
 class ESC():
     def __init__(self,pin,max_value = 2000,min_value = 700,calibrated=False ):
         self.pin=pin
@@ -63,22 +59,22 @@ class ESC():
         # change your speed if you want to.... it should be between 700 - 2000
         print "Controls - a to decrease speed & d to increase speed OR q to decrease a lot of speed & e to increase a lot of speed"
         while True:
-            pi.set_servo_pulsewidth(self.pin, speed)
+            pi.set_servo_pulsewidth(self.pin, self.speed)
             inp = getch()
             if inp == "q":
-                speed -= 100    # decrementing the speed like hell
+                self.speed -= 100    # decrementing the speed like hell
             elif inp == "e":    
-                speed += 100    # incrementing the speed like hell
+                self.speed += 100    # incrementing the speed like hell
             elif inp == "d":
-                speed += 10     # incrementing the speed 
+                self.speed += 10     # incrementing the speed 
             elif inp == "a":
-                speed -= 10     # decrementing the speed
+                self.speed -= 10     # decrementing the speed
             elif inp == "y":
                 print("Stopping...")
                 self.stop()     #going for the stop function
                 break
             else:
-                print "WHAT DID I SAID!! Press a,q,d or e"
+                print "Press a,q,d or e"
             print "speed = {0}".format(self.speed)
     def arm(self): #This is the arming procedure of an ESC 
         pi.set_servo_pulsewidth(self.pin, 0)
@@ -90,6 +86,7 @@ class ESC():
         
     def stop(self): #This will stop every action your Pi is performing for ESC ofcourse.
         pi.set_servo_pulsewidth(self.pin, 0)
+        print("Stopping...")
         pi.stop()
     def update(self,speed):
         self.speed=speed
