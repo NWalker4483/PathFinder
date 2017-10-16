@@ -13,7 +13,6 @@ def CreateViews():
     cv2.startWindowThread()
 def calibrate(_frame,_width=400):
     # define the lower and upper boundaries of the mask
-    # ball in the HSV color space, then initialize the
     _frame = resize(_frame, width=_width)
     _frame = cv2.flip(_frame,1)
     HSV= cv2.cvtColor(_frame,cv2.COLOR_BGR2HSV)
@@ -21,6 +20,7 @@ def calibrate(_frame,_width=400):
     HSV = cv2.erode(HSV, None, iterations=15)
     HSV = cv2.dilate(HSV, None, iterations=15)
     area=select_region(HSV)
+    # define the lower and upper boundaries of the screen
     hueMax = area[:,:,0].max()
     hueMin = area[:,:,0].min()
     lowerBound = np.array([hueMin,0,0], np.uint8)
