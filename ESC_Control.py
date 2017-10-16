@@ -66,7 +66,7 @@ class ESC():
         speed = 1500    # change your speed if you want to.... it should be between 700 - 2000
         print "Controls - a to decrease speed & d to increase speed OR q to decrease a lot of speed & e to increase a lot of speed"
         while True:
-            pi.set_servo_pulsewidth(ESC, speed)
+            pi.set_servo_pulsewidth(self.pin, speed)
             inp = getch()
             
             if inp == "q":
