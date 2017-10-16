@@ -1,22 +1,42 @@
-# Apply edge detection method on the image
-print("Importing Junks & Stuff")
-from imutils.video import VideoStream
-from imutils import resize
+# Apply edge detection method on the imag
+import imutils
 from PIL import Image
 import cv2
-def CreateViews():
-    cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)  
-    cv2.moveWindow("base-image",0,0) 
-    cv2.namedWindow("result-image", cv2.WINDOW_AUTOSIZE)
-    cv2.moveWindow("result-image",600,0)
+from imutils.video import VideoStream
 
+def Create_Views():
+    #Create Windows to view images
+    cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)  
+    cv2.namedWindow("result-image", cv2.WINDOW_AUTOSIZE)
+    #Position the windows next to eachother
+    cv2.moveWindow("base-image",0,0)  
+    cv2.moveWindow("result-image",600,0)
+    #Start the window thread for the two windows we are using
     cv2.startWindowThread()
-def calibrate(_frame,_width=400):
-    # define the lower and upper boundaries of the mask
-    _frame = resize(_frame, width=_width)
+def Update_Views(_nimage,_area):
+    cv2.imshow("base-image", _nimage)
+    cv2.imshow("result-image", _area)
+
+def pixelate(_image,pixelSize=32):
+        backgroundColor = (0,)*3
+        _image=Image.fromarray(_image)
+        _image = _image.resize((int(_image.size[0]/pixelSize), int(_image.size[1]/pixelSize)), Image.NEAREST)
+        _image = _image.resize((int(_image.size[0]*pixelSize), int(_image.size[1]*pixelSize)), Image.NEAREST)
+        """
+        pixel=_image.load()
+        for i in range(0,_image.size[0],pixelSize):
+            for j in range(0,_image.size[1],pixelSize):
+                for r in range(pixelSize):
+                    pixel[i+r,j] = backgroundColor
+                    pixel[i,j+r] = backgroundColor
+                    """
+        return np.array(_image)
+    
+def calibrate(_frame,_width=600):
+    _frame = imutils.resize(_frame, width=_width)
     _frame = cv2.flip(_frame,1)
     HSV= cv2.cvtColor(_frame,cv2.COLOR_BGR2HSV)
-    # resize the frame, blur it, and convert it to the HSV color space
+     # resize the frame, blur it, and convert it to the HSV color space
     HSV = cv2.erode(HSV, None, iterations=15)
     HSV = cv2.dilate(HSV, None, iterations=15)
     area=select_region(HSV)
@@ -26,7 +46,7 @@ def calibrate(_frame,_width=400):
     lowerBound = np.array([hueMin,0,0], np.uint8)
     upperBound = np.array([hueMax,255,255], np.uint8)
     mask = cv2.inRange(HSV,lowerBound,upperBound)
-    return mask
+    return mask,area
 def filter_region(image, vertices):
         #Create the mask using the vertices and apply it to the input image
         mask = np.zeros_like(image)
@@ -36,8 +56,7 @@ def filter_region(image, vertices):
             cv2.fillPoly(mask, vertices, (255,)*mask.shape[2]) # in case, the input image has a channel dimension        
         return cv2.bitwise_and(image, mask)
 def select_region(_image):
-       # It keeps the region surrounded by the `vertices` (i.e. polygon).  Other area is set to 0 (black).
-    
+       # It keeps the region surrounded by the `vertices`. Other area is set to 0 (black).
         # first, define the polygon by vertices
         rows, cols = _image.shape[:2]
         bottom_left  = [cols*0.1, rows*0.95]
@@ -47,15 +66,13 @@ def select_region(_image):
         # the vertices are an array of polygons (i.e array of arrays) and the data type must be integer
         vertices = np.array([[bottom_left, top_left, top_right, bottom_right]], dtype=np.int32)
         return filter_region(_image, vertices)    
-def show_mask() :
-    try:
+def getit() :
+   try:
         frame=camera.read()
     except AttributeError:
         pass
-    nimage=calibrate(frame)
-    #nimage = imutils.resize(nimage, width=50)
-    cv2.imshow("base-image", frame)
-    cv2.imshow("result-image", nimage)
+    nimage,area=calibrate(image)
+    Update_Views(nimage,area)
 def ConnectCam(tries=0):
     if tries<10:
         try:
@@ -68,15 +85,15 @@ def ConnectCam(tries=0):
         print("We've tried to many times")
 
 camera=ConnectCam()
-print("Lets get it started in here")
+Create_Views()
+print("Begin")
 while True:
     try:
-        show_mask()
+        getit()
     except KeyboardInterrupt:
         print("Closing...")
-        cv2.destroyAllWindows()
-        camera.stream.stop()
-        break
+        camera.close()
+cv2.destroyAllWindows()
     #pimage= pixelate(image,pixelSize=3)
 # images showing the region of interest only
 
@@ -85,4 +102,4 @@ while True:
 	# if the 'q' key is pressed, stop the loop
 # cleanup the camera and close any open windows
 
-
+#

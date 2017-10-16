@@ -22,6 +22,14 @@ def pixelate(_image,pixelSize=32):
         _image=Image.fromarray(_image)
         _image = _image.resize((int(_image.size[0]/pixelSize), int(_image.size[1]/pixelSize)), Image.NEAREST)
         _image = _image.resize((int(_image.size[0]*pixelSize), int(_image.size[1]*pixelSize)), Image.NEAREST)
+        """
+        pixel=_image.load()
+        for i in range(0,_image.size[0],pixelSize):
+            for j in range(0,_image.size[1],pixelSize):
+                for r in range(pixelSize):
+                    pixel[i+r,j] = backgroundColor
+                    pixel[i,j+r] = backgroundColor
+                    """
         return np.array(_image)
     
 def calibrate(_frame,_width=600):
