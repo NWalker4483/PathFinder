@@ -1,0 +1,25 @@
+<html>
+    <head><h2 align="center">LED Over Wifi Test!</h2></head>
+    <body>
+    <form align="center" action="index.php" method="get">
+        <table border=1 style="width:100%">
+            <tr align="center">
+              <td><input type="submit" name="state" value="on"/> On</td> <td> <input type="submit" name="state" value="off"/> Off</td><td> <input type="submit" name="state" value="blink" /> Blink </td>
+            </tr>
+          </table> 
+    </form>
+    <h1 align="center">Video Streaming </h1>
+    <table border=1 style="width:100%">
+        <tr>
+          <th>Camera, Mask and Area</th>
+        </tr>
+        <tr align="center">
+          <td><img align="center" id="bg" src="{{ url_for('video_feed') }}"></td>
+        </tr>
+      </table>
+    </body>
+    <footer align="center">
+    <h6>By Nile Walker <br>
+    For Test purpose only</h6>
+    </footer>
+  </html>
