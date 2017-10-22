@@ -1,10 +1,10 @@
-#include "opencv2\highgui.hpp"
-#include "opencv2\imgproc.hpp"
-#include "opencv2\objdetect\objdetect.hpp"
+#include "highgui.h"
+#include "imgproc.hpp"
+#include "objdetect.hpp"
 #include "opencv2/video/tracking.hpp"
 #include <vector>
 #include <stdio.h>
-#include <Windows.h>
+//#include <Windows.h>
 #include <iostream>
 #include <time.h>
 #include <ctime>
