@@ -105,7 +105,7 @@ void set_period(){
 /* *********START the PWMS at the output ******* */
 void start_pwms(){
  int fd, len;
- char buf[MAX_BUF]; for(int i=0;i<4;i++){
+ char buf[MAX_BUF]; for(int i=0;i<1;i++){
  snprintf(buf, sizeof(buf), "/sys/class/pwm/pwm%d/run", i);
  fd = open(buf, O_WRONLY);
  if (fd < 0) {
@@ -121,7 +121,7 @@ return;
 /* *******************Stop the PWMS*****************   */       
 void stop_pwms(){
  int fd, len;
- char buf[MAX_BUF]; for(int i=0;i<4;i++){
+ char buf[MAX_BUF]; for(int i=0;i<1;i++){
  snprintf(buf, sizeof(buf), "/sys/class/pwm/pwm%d/run", i);
  fd = open(buf, O_WRONLY);
  if (fd < 0) {
@@ -146,12 +146,12 @@ return;
  * ****************** Not required for servos  ********************************** */                  
 Motor_pwm.start_pwms();
  usleep(100000);
- Motor_pwm.set_duties(2500000,2500000,2500000,2500000);
+ Motor_pwm.set_duties(2500000);
  usleep(100000);
- Motor_pwm.set_duties(1000000,1000000,1000000,1000000);
+ Motor_pwm.set_duties(1000000);
  usleep(100000);
 /* ******************************************************************************* */
- unsigned long int M1,M2,M3,M4; 
+ unsigned long int M1;
  while(1){
  cout<<"Give motor pwms as 10,11,....25";  //i.e. 15*100000=1500000=1.5 milli seconds and so on
  cin>>M1;
