@@ -1,4 +1,5 @@
 # This program will let you test your ESC and brushless motor with a raspberry pi.
+# Modification by Nile Walker based on/inspired from ESC.py by AGT @instructable.com
 
 import os     #importing os library so as to communicate with the system
 import time   #importing time library to make Rpi wait because its impatient 

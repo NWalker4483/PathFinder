@@ -1,6 +1,4 @@
 #include <signal.h>
-
-
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,6 +15,11 @@ class ESC{
     bool calibrated;
     
     ESC(int in, int ax_value = 2000,int in_value = 700,int peed=0,bool alibrated=false){
+    fp = fopen("/dev/pi-blaster", "w");
+        if (fp == NULL) {
+            printf("Error opening file\n");
+            exit(0);
+         }
     pin=in;
     max_value=ax_value;
     min_value=in_value;
@@ -30,8 +33,15 @@ class ESC{
     };/*
     if (alibrated == false){
         */
-}};
+};
+    void update()
+    {
+    fprintf(fp, "%i=%f\n", pin,speed/);
+                        fflush(fp);
+    };
+};
 int main(){
+ESC Test(4);
 return 0;
 }
 
@@ -59,13 +69,13 @@ int main(void)
  
     int pin = 0;
     float pwm = 0.0;
- 
+ '''
     // open the pi-blaster device file. If it fails, confirm that pi-blaster has been started
     fp = fopen("/dev/pi-blaster", "w");
     if (fp == NULL) {
         printf("Error opening file\n");
         exit(0);
-     }
+     }'''
  
     // create the PWM values which are used for the animation going in one direction
     float pwdPower[LEVELS*4];
