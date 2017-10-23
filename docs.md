@@ -1,54 +1,73 @@
 # Pathfinder
-<table>
-<tr><td>
-<img src="View_Screenshot_10_12_30.png" width="300" height="300" align="center"> 
-<img src="Area_Screenshot_10_12_30.png" width="300" height="300" align="left"> 
-<img src="Mask_Screenshot_10_12_30.png" width="300" height="300" align="right"> 
 
-</td>
-</tr>
-</table>
 ## Introduction
-This project is to create a vehicle capable of navigate sidewalks and other similiar pathway autonomously.
-## Controls
-|Pose|Action|
-|------|------|
-|Finger Spread|Takeoff|
-|Fist|Land|
-|Wave Out|Roll Right|
-|Wave In|Roll Left|
-|Double Tap |Barrel Roll|
+This project is to create a vehicle capable of navigate sidewalks and other similiar pathway autonomously
 ## Prereqs
-Before attempting to run this project make sure that [Myo Connect Software](https://www.myo.com/start) is installed and setup.
-
-## Dependencies 
-This project utilizes:
+Before attempting to run this project make sure that you have run the setup.sh file
+## Developed on
 * macOS Sierra v10.12.6
-* Raspberry Pi 2 
+* Raspberry Pi 2 B+
+* Raspbian 
+* Python 3.6
+## Additional Dependencies 
+This project utilizes:
 * Homebrew v1.3.2
-* node.js v6.11.3
-* myo v3.0.0
-* ar-drone v0.0.3
-``` 
-$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-$ brew update
-$ brew install node
-$ npm install myo keypress ar-drone
-```
+* 
+## The Wiring 
+    [Make Fritzing Diagram of Car]
+## Power 
+* This Pi in this project is powered by a 1500mah External Mophie battery case
+* The electronic speed controller is powered by the stock ArDrone 2.0 battery
+## Training Data
+* ### Collection
+    In order to collect training data for this three cameras are attached to the vehicle facing forward, left and right. The vehicle was then driven manually making sure to stay relatively close to the center of the pathway. After which each respective cameras view was given the label of right,left or forward
+> Note: This collection method was borrowed from Nikolai Smolyanskiy's paper on [Low-Flying Autonomous MAV Trail Navigation using Deep Neural Networks for Environmental Awareness](https://arxiv.org/abs/1705.02550)
+* ### Training
+    This project current uses the built-in Gaussian Naive-Bayes Classifier for determining which direction to rotate the turning servo
+## Testing Data
+* ### Collection
+
+    <img src="View_Screenshot_10_12_30.png" width="150" height="100" align="center"> 
+
+    The vehicle connects to a stock _____ 1080p webcam which has been set to capture frames at 320 X 240 resolution in order to reduce computational load. 
+* ### Processing
+    <img src="Area_Screenshot_10_12_30.png" width="150" height="100" align="center"> 
+
+    Once a frame is captured all except the lower front area of the image is filtered out, the image pixels are dialated and converted to HSV format.
+
+    <img src="Mask_Screenshot_10_12_30.png" width="150" height="100" align="center"> 
+
+    The program then finds the maximum and minimum hue values in this selected region and finds and removes any pixels in the original image which are not within this range in order to create the testing mask.
+    
+
+> Note: The code for filtering out image portion is from naokishibuya's project on [Finding Lane Lines](https://github.com/naokishibuya/car-finding-lane-lines)
+* ### Prediction
+    At the programs launch it loads in a pretrained classification model and feeds
+## Pedestrian Avoidance
+
 ## Start-up
-Once your drone is on connect to the ardrone wireless network in your wifi menu. Then, if all of the neccesary modules are installed and a Myo is connected launch the program by running.
-```
-$ node Wright.js 
-``` 
->The Console should then display "begin" and "I'm Alive". Once these are displayed double tap your fingers in order to unlock the Myo and issue commands. 
+Once Host_process is launched it will automatically recalibrate the ESC and load the pretrained classification model.
+At the moment inorder to begin the driving script the user must answer "yes" to a terminal prompt. Once the started the driving motor is run at 1/4 of its max speed and begin to classify and react to turns in the path
+## Interfacing
+[Add Image of Interface]
+* Once the program is launched and the car and client are on the same network it will start to host a Flask server on port 5000 of its current ip. This webpage currently allows you to see the vehicles camera view.
+
+### In-Development
+* Enabling PHP on Flask Server so that an Emergency Stop function can be called from the webpage
+* Remote Monitering of the CPU Temperature and Load
+* Translation of Code to C++
+* Use of K-Nearest Classification Method in place of Gaussian Classifier
+
 ### Future Developments
-* Video Streaming from the Drone
-* Using the GyroScope for motion controls
+* Utilizing the Intel RealSense VF0810 Camera's Depth tracking capabilities to allow for more adaptive obstacle avoidance
 * Control the autonomous vehicle using the Intel Joule 570X
+* Connecting a GPS module to the device 
+* Creating Waypoints to follow with Google Maps Directions API
 
 ### Commonly Experienced Errors
-* TBA
+* Path Tracking is unreliable at night and in shaded areas
 
 ### Additional Documentation
-- [Myo.js Docs](https://github.com/thalmiclabs/myo.js)
-- [Ar-Drone Docs](https://github.com/felixge/node-ar-drone)
+- [Flask Video Stream Tutorial](https://blog.miguelgrinberg.com/post/video-streaming-with-flask)
+- [Hue Filtering Forum](_blank)
+- [Brushless ESC Control Instructables](http://www.instructables.com/id/Driving-an-ESCBrushless-Motor-Using-Raspberry-Pi/)
