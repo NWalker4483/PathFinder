@@ -1,12 +1,13 @@
 # Apply edge detection method on the imag
 import imutils
-from PIL import Image
+from PIL import Image #For pixelation
 import cv2
+import time
 import numpy as np
 from imutils.video import VideoStream
 from flask import Flask, render_template, Response
-
-
+import datetime
+from getch import getch
 def Create_Views():
     #Create Windows to view images
     cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)  
@@ -78,8 +79,14 @@ def getit() :
         except AttributeError:
             pass
         nimage,area,view=calibrate(frame)
-        #stitch Images for video feed
+        key='1' #getch()
         frame = np.concatenate((nimage, area, view), axis=1)
+        if key=='q':
+            cv2.imwrite("Mask_Screenshot{0}.png".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d-%H:%M:%S')),nimage)
+        #stitch Images for video feed
+            cv2.imwrite("View_Screenshot{0}.png".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d-%H:%M:%S')),view)
+            cv2.imwrite("Area_Screenshot{0}.png".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d-%H:%M:%S')),area)
+   
         #frame=pixelate(frame)
         ret, jpeg = cv2.imencode('.jpg', frame)
         frame=jpeg.tobytes()

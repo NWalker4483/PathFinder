@@ -59,7 +59,8 @@ At the moment inorder to begin the driving script the user must answer "yes" to 
 * Use of K-Nearest Classification Method in place of Gaussian Classifier
 
 ### Future Developments
-* Utilizing the Intel RealSense VF0810 Camera's Depth tracking capabilities to allow for more adaptive obstacle avoidance
+* Utilizing the Intel RealSense 
+VF0810 Camera's Depth tracking capabilities to allow for more adaptive obstacle avoidance
 * Control the autonomous vehicle using the Intel Joule 570X
 * Connecting a GPS module to the device 
 * Creating Waypoints to follow with Google Maps Directions API
