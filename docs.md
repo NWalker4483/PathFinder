@@ -1,15 +1,15 @@
 # Pathfinder
 <table>
 <tr><td>
-<img src="View_Screenshot2017_10_23-10/12/30.png" width="300" height="300" align="center"> 
-<img src="Area_Screenshot2017_10_23-10/12/30.png" width="300" height="300" align="left"> 
-<img src="Mask_Screenshot2017_10_23-10/12/30.png" width="300" height="300" align="left"> 
+<img src="View_Screenshot_10_12_30.png" width="300" height="300" align="center"> 
+<img src="Area_Screenshot_10_12_30.png" width="300" height="300" align="left"> 
+<img src="Mask_Screenshot_10_12_30.png" width="300" height="300" align="right"> 
 
 </td>
 </tr>
 </table>
 ## Introduction
-This project uses a [Myo Armband](https://www.myo.com/start) running firmware version 1.5.1970 as the controller for a Parrot 2 drone. 
+This project is to create a vehicle capable of navigate sidewalks and other similiar pathway autonomously.
 ## Controls
 |Pose|Action|
 |------|------|
@@ -24,6 +24,7 @@ Before attempting to run this project make sure that [Myo Connect Software](http
 ## Dependencies 
 This project utilizes:
 * macOS Sierra v10.12.6
+* Raspberry Pi 2 
 * Homebrew v1.3.2
 * node.js v6.11.3
 * myo v3.0.0
@@ -43,7 +44,7 @@ $ node Wright.js
 ### Future Developments
 * Video Streaming from the Drone
 * Using the GyroScope for motion controls
-* Connect to drone using Intel 570X
+* Control the autonomous vehicle using the Intel Joule 570X
 
 ### Commonly Experienced Errors
 * TBA
