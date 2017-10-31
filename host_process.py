@@ -1,12 +1,13 @@
 # Apply edge detection method on the imag
 import imutils
 from PIL import Image #For pixelation
-import cv2
+import cv2 
 import time
 import numpy as np
 from imutils.video import VideoStream
 from flask import Flask, render_template, Response
 import datetime
+#from IP import get_ip
 from getch import getch
 def Create_Views():
     #Create Windows to view images
@@ -52,6 +53,7 @@ def calibrate(_frame,_width=600):
     upperBound = np.array([hueMax,255,255], np.uint8)
     mask = cv2.inRange(HSV,lowerBound,upperBound)
     mask = cv2.cvtColor(mask,cv2.COLOR_GRAY2BGR)
+    mask=cv2.Canny(mask,50,150)
     return imutils.resize(mask,width=300),imutils.resize(area,width=300),imutils.resize(_frame,width=300)
 def filter_region(image, vertices):
         #Create the mask using the vertices and apply it to the input image
@@ -79,7 +81,7 @@ def getit() :
         except AttributeError:
             pass
         nimage,area,view=calibrate(frame)
-        key='1' #getch()
+        key=getch()
         frame = np.concatenate((nimage, area, view), axis=1)
         if key=='q':
             cv2.imwrite("Mask_Screenshot{0}.png".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d-%H:%M:%S')),nimage)
@@ -116,6 +118,7 @@ def video_feed():
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
+   
     app.run(host='127.0.0.1', debug=True)
 print("Begin")
     #pimage= pixelate(image,pixelSize=3)

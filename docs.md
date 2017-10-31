@@ -11,7 +11,6 @@ Before attempting to run this project make sure that you have run the setup.sh f
 * Python 3.6
 ## Additional Dependencies 
 This project utilizes:
-* Homebrew v1.3.2
 * 
 ## The Wiring 
     [Make Fritzing Diagram of Car]

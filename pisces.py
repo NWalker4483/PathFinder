@@ -118,6 +118,7 @@ if __name__=="__main__":
     parser.add_argument("-s", "--speed", type=int,
                         help="set output speed")
     args = parser.parse_args()
+    #This is the start of the program actually, to start the function it needs to be initialized before calling... stupid python.    
     if type(args.speed)!=None and type(args.pin)!=None:
         Test=ESC(args.pin,speed=args.speed,calibrated=True)
         Test.test_control()
@@ -128,4 +129,3 @@ if __name__=="__main__":
         print("Error No Pin Value Supplied")
     
 
-#This is the start of the program actually, to start the function it needs to be initialized before calling... stupid python.    
