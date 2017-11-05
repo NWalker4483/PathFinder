@@ -81,7 +81,7 @@ def getit() :
         except AttributeError:
             pass
         nimage,area,view=calibrate(frame)
-        key=getch()
+        key='w'
         frame = np.concatenate((nimage, area, view), axis=1)
         if key=='q':
             cv2.imwrite("Mask_Screenshot{0}.png".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d-%H:%M:%S')),nimage)

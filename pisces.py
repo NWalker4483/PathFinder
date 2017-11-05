@@ -23,8 +23,7 @@ class ESC():
             self.speed = min_value
         if calibrated == False:
             self.calibrate()
-        
-
+            
     def manual_drive(self): #You will use this function to program your ESC if required
         print "You have selected manual option so give a value between 0 and {0} type 'stop' to exit".format(self.max_value)    
         while True:
