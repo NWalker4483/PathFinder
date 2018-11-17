@@ -66,12 +66,12 @@ function initMap() {
              // Also attach the marker to an array so we can keep track of it and remove it
              // when calculating new routes.
              var myRoute = directionResult.routes[0].legs[0];
+             var polyline = directionResult.routes[0].overview_polyline.toString();
              for (var i = 0; i < myRoute.steps.length; i++) {
                var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
                marker.setMap(map);
                marker.setPosition(myRoute.steps[i].start_location);
-               polyline = directionResult.routes[0].overview_polyline.toString();
-               $(document.getElementById("polyline")).text("Polyline: "+ polyline);
+               $(document.getElementById("polyline")).text(polyline);
                socket.emit('requests', polyline);
                attachInstructionText(
                     stepDisplay, marker, myRoute.steps[i].instructions, map);

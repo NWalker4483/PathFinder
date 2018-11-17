@@ -6,7 +6,7 @@ import time
 import numpy as np
 from imutils.video import VideoStream
 from flask_socketio import SocketIO, emit
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 import datetime
 #from IP import get_ip
 from getch import getch
@@ -112,7 +112,6 @@ camera=ConnectCam()
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret!"
 app.config["TEMPLATES_AUTO_RELOAD"]=True
-socketio = SocketIO(app, async_mode="threading")
 
 @app.route('/')
 def index():
@@ -121,8 +120,9 @@ def index():
 def video_feed():
    return Response(getit(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
-@socketio.on("requests")  
-def writeout(data):
-    print(data)  
+@app.route('/results', methods=['GET']) 
+def writeout():
+    uuid = request.args.get('polyline')
+    print(uuid)  
 if __name__ == '__main__':
-    socketio.run(app,host='127.0.0.1', debug=True)
+    app.run(host='127.0.0.1', debug=True)
