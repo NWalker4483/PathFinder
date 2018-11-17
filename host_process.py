@@ -5,10 +5,12 @@ import cv2
 import time
 import numpy as np
 from imutils.video import VideoStream
+from flask_socketio import SocketIO, emit
 from flask import Flask, render_template, Response
 import datetime
 #from IP import get_ip
 from getch import getch
+
 def Create_Views():
     #Create Windows to view images
     cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)  
@@ -82,7 +84,7 @@ def getit() :
             pass
         nimage,area,view=calibrate(frame)
         key='w'
-        print(nimage.shape,area.shape,view.shape)
+
         frame = np.concatenate((np.stack((nimage,)*3, axis=-1), area, view), axis=1)
         if key=='q':
             cv2.imwrite("Mask_Screenshot{0}.png".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d-%H:%M:%S')),nimage)
@@ -90,7 +92,6 @@ def getit() :
             cv2.imwrite("View_Screenshot{0}.png".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d-%H:%M:%S')),view)
             cv2.imwrite("Area_Screenshot{0}.png".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d-%H:%M:%S')),area)
    
-        #frame=pixelate(frame)
         ret, jpeg = cv2.imencode('.jpg', frame)
         frame=jpeg.tobytes()
         yield (b'--frame\r\n'
@@ -109,6 +110,9 @@ def ConnectCam(tries=0):
 
 camera=ConnectCam()
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "secret!"
+app.config["TEMPLATES_AUTO_RELOAD"]=True
+socketio = SocketIO(app, async_mode="threading")
 
 @app.route('/')
 def index():
@@ -117,17 +121,8 @@ def index():
 def video_feed():
    return Response(getit(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
-
+@socketio.on("requests", namespace="/")  
+def writeout(data):
+    print(data)  
 if __name__ == '__main__':
-   
-    app.run(host='127.0.0.1', debug=True)
-print("Begin")
-    #pimage= pixelate(image,pixelSize=3)
-# images showing the region of interest only
-
-
-
-	# if the 'q' key is pressed, stop the loop
-# cleanup the camera and close any open windows
-
-#
+    socketio.run(app,host='127.0.0.1', debug=True)

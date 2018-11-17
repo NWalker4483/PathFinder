@@ -68,8 +68,9 @@ function initMap() {
                var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
                marker.setMap(map);
                marker.setPosition(myRoute.steps[i].start_location);
-               $(document.getElementById("polyline")).text("Polyline: "+directionResult.routes[0].overview_polyline.toString());
-               socket.emit('requests',directionResult.routes[0].overview_polyline.toString())
+               polyline = directionResult.routes[0].overview_polyline.toString();
+               $(document.getElementById("polyline")).text("Polyline: "+ polyline);
+               socket.emit('requests', polyline);
                attachInstructionText(
                    stepDisplay, marker, myRoute.steps[i].instructions, map);
              }
