@@ -69,7 +69,7 @@ int main(void)
  
     int pin = 0;
     float pwm = 0.0;
- '''
+    '''
     // open the pi-blaster device file. If it fails, confirm that pi-blaster has been started
     fp = fopen("/dev/pi-blaster", "w");
     if (fp == NULL) {

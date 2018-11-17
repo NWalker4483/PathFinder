@@ -92,7 +92,7 @@ def getit() :
             cv2.imwrite("View_Screenshot{0}.png".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d-%H:%M:%S')),view)
             cv2.imwrite("Area_Screenshot{0}.png".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d-%H:%M:%S')),area)
    
-        ret, jpeg = cv2.imencode('.jpg', frame)
+        _, jpeg = cv2.imencode('.jpg', frame)
         frame=jpeg.tobytes()
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
@@ -121,7 +121,7 @@ def index():
 def video_feed():
    return Response(getit(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
-@socketio.on("requests", namespace="/")  
+@socketio.on("requests")  
 def writeout(data):
     print(data)  
 if __name__ == '__main__':

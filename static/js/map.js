@@ -2,8 +2,10 @@
 //var events = require('events');
 //var EventEmitter = events.EventEmitter;
 //var logger = new EventEmitter(); -->
-var CHAT_SERVER = "http://localhost:7050"
-var socket = io.connect(CHAT_SERVER);  
+
+//var CHAT_SERVER = "http://localhost:5000"
+//var socket = io.connect(CHAT_SERVER);  
+var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 function initMap() {
              var markerArray = [];
      
@@ -72,7 +74,7 @@ function initMap() {
                $(document.getElementById("polyline")).text("Polyline: "+ polyline);
                socket.emit('requests', polyline);
                attachInstructionText(
-                   stepDisplay, marker, myRoute.steps[i].instructions, map);
+                    stepDisplay, marker, myRoute.steps[i].instructions, map);
              }
            }
      
