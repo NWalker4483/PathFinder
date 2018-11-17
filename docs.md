@@ -1,4 +1,4 @@
-# Pathfinder
+_# Pathfinder
 
 ## Introduction
 This project is to create a vehicle capable of navigate sidewalks and other similiar pathway autonomously

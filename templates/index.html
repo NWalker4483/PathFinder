@@ -7,28 +7,14 @@
 <head>
     <script src='/socket.io/socket.io.js'></script>
     <script>
-        var socket = io();
+      function StartTour() {
+        var polyline = document.getElementById("polyline").textContent; 
 
-        socket.on('welcome', function(data) {
-            addMessage(data.message);
-
-            // Respond with a message including this clients' id sent from the server
-            socket.emit('i am client', {data: 'foo!', id: data.id});
-        });
-        socket.on('time', function(data) {
-            addMessage(data.time);
-        });
-        socket.on('error', console.error.bind(console));
-        socket.on('message', console.log.bind(console));
-
-        function addMessage(message) {
-            var text = document.createTextNode(message),
-                el = document.createElement('li'),
-                messages = document.getElementById('messages');
-
-            el.appendChild(text);
-            messages.appendChild(el);
-        }
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", "results?polyline=" + polyline , false ); // false for synchronous request
+    xmlHttp.send(null);
+    return xmlHttp.responseText;
+}
     </script>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
@@ -83,7 +69,7 @@ and is wrapped around the whole page content, except for the footer in this exam
               <span class="w3-opacity">Point A, meet Point B</span>
             </h5>
             <button id="stop" class="w3-button w3-red w3-padding-large w3-margin-bottom">E-Stop</button>
-            <button align="right" id="start" class="w3-button w3-green w3-padding-large w3-margin-bottom">Start</button>
+            <button align="right" id="star" onclick='StartTour()' class="w3-button w3-green w3-padding-large w3-margin-bottom">Start</button>
           </div>
 
           <div class="w3-container">

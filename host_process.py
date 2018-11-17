@@ -120,9 +120,10 @@ def index():
 def video_feed():
    return Response(getit(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
-@app.route('/results', methods=['GET']) 
+@app.route('/results', methods=['GET','POST']) 
 def writeout():
     uuid = request.args.get('polyline')
-    print(uuid)  
+     
+    return "Hello"
 if __name__ == '__main__':
     app.run(host='127.0.0.1', debug=True)

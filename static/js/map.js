@@ -72,7 +72,7 @@ function initMap() {
                marker.setMap(map);
                marker.setPosition(myRoute.steps[i].start_location);
                $(document.getElementById("polyline")).text(polyline);
-               socket.emit('requests', polyline);
+               //socket.emit('requests', polyline);
                attachInstructionText(
                     stepDisplay, marker, myRoute.steps[i].instructions, map);
              }
