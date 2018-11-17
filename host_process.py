@@ -82,7 +82,8 @@ def getit() :
             pass
         nimage,area,view=calibrate(frame)
         key='w'
-        frame = np.concatenate((nimage, area, view), axis=1)
+        print(nimage.shape,area.shape,view.shape)
+        frame = np.concatenate((np.stack((nimage,)*3, axis=-1), area, view), axis=1)
         if key=='q':
             cv2.imwrite("Mask_Screenshot{0}.png".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d-%H:%M:%S')),nimage)
         #stitch Images for video feed
@@ -111,7 +112,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('host.html')
+    return render_template('index.html')
 @app.route('/video_feed')
 def video_feed():
    return Response(getit(),

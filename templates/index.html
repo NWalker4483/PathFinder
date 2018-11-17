@@ -32,8 +32,8 @@
     </script>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-  <link rel="stylesheet" type="text/css" href="MSU_Style.css">
-  <script src="map.js"></script>
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/MSU_Style.css') }}">
+  <script src="{{url_for('static', filename='js/map.js') }}"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-pnEPa4TwZ4JWXPjR6EI-aG9Nu-2ICXk&callback=initMap"></script>
   <script src="../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js"></script>
